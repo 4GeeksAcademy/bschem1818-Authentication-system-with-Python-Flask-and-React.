@@ -13,7 +13,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			user: {
+				email: [],
+				password: [],
+			},
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -31,6 +35,41 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return data;
 				}catch(error){
 					console.log("Error loading message from backend", error)
+				}
+			},
+
+
+			logout: () => {
+				localStorage.removeItem("token");
+				setStore({ foundation: false });
+			},
+
+			login: async (email, password) => {
+				try {
+					const requestOptions = {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({
+							'email': email,
+							'password': password
+						})
+					};
+					const response = await fetch(process.env.BACKEND_URL + "/api/login", requestOptions);
+
+					if (!response.ok) {
+						console.error("Login failed:", response.statusText);
+						return false;
+					}
+
+					const data = await response.json();
+					localStorage.setItem("token", data.access_token);
+					setStore({ foundation: data.user });  // Update as necessary for your app
+					return true;
+				} catch (error) {
+					console.error("Error during login:", error);
+					return false;
 				}
 			},
 			changeColor: (index, color) => {

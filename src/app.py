@@ -3,6 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
+
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
@@ -10,6 +11,10 @@ from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, get_jwt, JWTManager
+from flask_bcrypt import Bcrypt
+from datetime import timedelta
+
 
 # from models import Person
 
@@ -64,6 +69,17 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
     return response
+
+
+app.config['JWT_ALGORITHM'] = 'RS256'
+app.config['JWT_SECRET_KEY'] = "Secreto"
+app.config["JWT_ALGORITHM"] = "HS256"
+app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET_KEY', 'sample key')
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(weeks=1)
+jwt = JWTManager(app)
+bcrypt = Bcrypt(app)
+app.bcrypt = bcrypt
+
 
 
 # this only runs if `$ python src/main.py` is executed
