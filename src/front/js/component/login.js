@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom"
 
 
-export const Form = () => {
+export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { store, actions } = useContext(Context);
@@ -16,44 +16,18 @@ export const Form = () => {
 
         const response = await actions.login(email, password)
         if (response) {
-            navigate("/")
+            navigate("/private")
         }else{
-            navigate("/form")
+            navigate("/login")
         }
 
     }
 
-    const Donoruser = async () => {
-        try {
-            const response = await fetch(`${process.env.BACKEND_URL}/api/donor/${id}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
     
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
-    
-            const data = await response.json();
-    
-            // Suponiendo que data.profileCompleted es una propiedad que indica si el perfil está completo
-            if (data.profileCompleted) {
-                // Redirigir a la página del Donor
-                window.location.href = '/donors';
-            } else {
-                // Redirigir a la página para completar el perfil
-                window.location.href = '/donorform';
-            }
-        } catch (error) {
-            console.error('Error al obtener el perfil del donante:', error);
-        }
-    };
     return (
         <div>
             <form className=".w-25" onSubmit={sendData}>
-                <h3 className="text-secondary">Login Donor</h3>
+                <h3 className="text-secondary">Login User</h3>
                 <div className="mb-3">
                     <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
                     <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
@@ -65,7 +39,7 @@ export const Form = () => {
                 </div>
                 <button type="submit" className="btn btn-primary">Login</button>
             </form>
-            <Link to="/signup/donor" className="my-link">Signup</Link>
+            <Link to="/signup" className="my-link">Signup</Link>
 
         </div>
     );

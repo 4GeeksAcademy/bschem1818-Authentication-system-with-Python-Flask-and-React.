@@ -7,8 +7,9 @@ import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
-import { Form } from "./component/form";
-
+import { Login } from "./component/login";
+import { Signup } from "./component/signup";
+import { Private } from "./component/private";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 
@@ -27,7 +28,9 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Home />} path="/" />
-                        <Route element={<Form />} path="/form" />
+                        <Route element={<Signup />} path="/signup" />
+                        <Route element={<Private />} path="/private" />
+                        <Route element={<Login />} path="/login" />
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<h1>Not found!</h1>} />
