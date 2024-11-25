@@ -14,10 +14,15 @@ export const Home = () => {
 		actions.logout()
 		navigate("/form")
 	}
+	function handleLogin(){
+		actions.logout()
+		navigate("/login")
+	}
 	return (
 		<div className="text-center mt-5">
 			{store.auth ? <button onClick={()=>handleLogout()} className="btn btn-primary">Logout</button>:null}
 			{store.auth ? <h1>Esto solo se ve cuando estas estes logeado</h1> :null}
+			<button onClick={()=>handleLogin()} className="btn btn-primary">Login</button>
 
 			<h1>Hello Rigo!!</h1>
 			<p>
